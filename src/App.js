@@ -16,8 +16,11 @@ import BoardAdmin from "./components/BoardAdmin";
 import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
+import Customers from "./components/Customers";
+import Municipalities from "./components/Municipalities";
 
 const App = () => {
+  const [showUserBoard, setShowUserBoard] = useState(false);
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
 
@@ -30,9 +33,11 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
+      setShowUserBoard(currentUser.roles.includes("ROLE_USER"));
       setShowModeratorBoard(currentUser.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
     } else {
+      setShowUserBoard(false);
       setShowModeratorBoard(false);
       setShowAdminBoard(false);
     }
@@ -57,6 +62,16 @@ const App = () => {
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/customers"} className="nav-link">
+                Customers
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/municipalities"} className="nav-link">
+                Municipalities
               </Link>
             </li>
 
@@ -125,6 +140,8 @@ const App = () => {
             <Route path="/user" element={<BoardUser />} />
             <Route path="/mod" element={<BoardModerator />} />
             <Route path="/admin" element={<BoardAdmin />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/municipalities" element={<Municipalities />} />
           </Routes>
         </div>
       </div>
