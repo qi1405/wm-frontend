@@ -17,6 +17,7 @@ import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
 import Customers from "./components/Customers";
+import AddCustomer from "./components/AddCustomer";
 import Municipalities from "./components/Municipalities";
 
 const App = () => {
@@ -67,6 +68,11 @@ const App = () => {
             <li className="nav-item">
               <Link to={"/customers"} className="nav-link">
                 Customers
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/addcustomer"} className="nav-link">
+                AddCustomers
               </Link>
             </li>
             <li className="nav-item">
@@ -141,6 +147,7 @@ const App = () => {
             <Route path="/mod" element={<BoardModerator />} />
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/addcustomer" element={<AddCustomer />} />
             <Route path="/municipalities" element={<Municipalities />} />
           </Routes>
         </div>

@@ -1,21 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import authHeader from '../services/auth-header';
+import userService from '../services/user.service';
+import EventBus from "../common/EventBus";
 
 const Municipalities = () => {
   const [municipalities, setMunicipalities] = useState([]);
 
   useEffect(() => {
     // Fetch data from your API (replace with your actual API endpoint)
-    axios.get('http://localhost:8080/api/municipalities/list', {headers: authHeader()})
-      .then((response) => {
+    userService.getMunicipalities().then(
+      (response) => {
         setMunicipalities(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+      },
+      (error) => {
+        const _municipalities =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+          setMunicipalities(_municipalities);
+
+        if (error.response && error.response.status === 401) {
+          EventBus.dispatch("logout");
+        }
+      }
+    );
   }, []);
+  console.log(municipalities);
 
   return (
     <div>

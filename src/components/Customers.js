@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import CustomerService from '../services/customer.service';
 import EventBus from "../common/EventBus";
 import UserService from "../services/user.service";
 

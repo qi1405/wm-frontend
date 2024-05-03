@@ -1,0 +1,53 @@
+#product_form {
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+}
+
+label {
+    display: inline-block;
+    vertical-align: middle;
+    float: left;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+}
+
+input {
+    float: right;
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+select {
+    padding: 10px;
+}
+
+p {
+}
+
+#product_form button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#product_form button:hover {
+    background-color: black;
+    color: white;
+}
+
+#sku{}
+#name{}
+#price{}
+#productType{
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+}
