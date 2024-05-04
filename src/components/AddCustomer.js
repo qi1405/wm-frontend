@@ -1,7 +1,8 @@
+
 import React, {useEffect, useState} from 'react';
 import "./AddCustomer.css";
 import {useNavigate} from "react-router-dom";
-import userService from '../services/user.service';
+import UserService from '../services/user.service';
 import EventBus from "../common/EventBus";
 
 
@@ -21,10 +22,10 @@ function AddProduct() {
         productIds: null,
     });
     const [errorMessage, setErrorMessage] = useState("");
-    const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+    // const [isSaveDisabled, setIsSaveDisabled] = useState(false);
 
     useEffect(() => {
-        userService.getMunicipalities().then(
+        UserService.getMunicipalities().then(
             (response) => {
                 setMunicipalities(response.data);
             },
@@ -37,25 +38,9 @@ function AddProduct() {
 
 
     useEffect(() => {
-        userService.getProducts().then(
+        UserService.getProducts().then(
             (response) => {
                 setProducts(response.data);
-                // const prodData = response.data;
-                // const loadedProd = [];
-
-                // for (const key in prodData){
-                //     loadedProd.push({
-                //         key: prodData[key].productID,
-                //         productID: prodData[key].productID,
-                //         description: prodData[key].description,
-                //         productName: prodData[key].productName,
-                //         price: prodData[key].price,
-                //         municipalityID: prodData[key].municipality.municipalityID,
-                //         municipalityName: prodData[key].municipality.municipalityName
-                //     })
-                // }
-                // console.log("prodData: ", prodData);
-                // console.log("loadedProd: ", loadedProd);
             },
             (error) => {
                 // Handle error
@@ -70,8 +55,9 @@ function AddProduct() {
     };
 
     const customerPage = () => {
-        navigate("/customers");
-    }     
+        navigate("/customers", { replace: true }); // Replace the current entry in the history stack
+        window.location.reload(); // Reload the page to get the most recent data
+    }    
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -83,23 +69,31 @@ function AddProduct() {
                 phoneNumber: customer.phonenumber,
                 address: customer.address,
                 customerType: customer.customerType,
-                // Conditionally include company name based on customer type
                 ...(customer.customerType === "INDIVIDUAL" ? {} : { company: { companyName: customer.companyName } }),
                 municipality: {
                     municipalityID: customer.municipalityID
                 }
             },
-            productIds: [customer.productIds] // Assuming only one product is selected
+            productIds: [customer.productIds]
         };
-
-        userService.createCustomer(data).then(
+    
+        UserService.createCustomer(data).then(
             (response) => {
-                // Handle success
+                // Customer created successfully
                 console.log("Customer created successfully", response.data);
+                // Navigate to customers page and reload
+                customerPage();
             },
             (error) => {
                 // Handle error
                 console.error("Error creating customer", error);
+                if (error.response && error.response.data) {
+                    // If server returns error message, set it as errorMessage state
+                    setErrorMessage(error.response.data);
+                } else {
+                    // If no specific error message received from server, set a generic error message
+                    setErrorMessage("An error occurred while creating the customer.");
+                }
             }
         );
     }
@@ -167,7 +161,7 @@ function AddProduct() {
                                 <input
                                     type="text"
                                     id="email"
-                                    pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                                    // pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                                     value={customer.email || ""}
                                     onChange={handleInputChange}
                                     name="email"
@@ -224,7 +218,7 @@ function AddProduct() {
                             <option value="" defaultValue="selected" hidden>Assign product</option>
                             {products.map((product) => (
                                 <option key={product.productID} value={product.productID}>
-                                    {product.productID} - {product.productName} - {product.price} - {product.municipality.municipalityName}
+                                    {product.productID} - {product.productName} - {product.price} - {product.municipality.municipalityID} - {product.municipality.municipalityName}
                                 </option>
                             ))}
                         </select>
@@ -234,7 +228,7 @@ function AddProduct() {
                                     type="submit"
                                     className="button"
                                     style={{marginBottom: "0.6rem"}}
-                                    disabled={isSaveDisabled}
+                                    // disabled={isSaveDisabled}
                                 >
                                     Save
                                 </button>
