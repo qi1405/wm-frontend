@@ -19,6 +19,8 @@ import EventBus from "./common/EventBus";
 import Customers from "./components/Customers";
 import AddCustomer from "./components/AddCustomer";
 import Municipalities from "./components/Municipalities";
+import CustomerDetails from "./components/CustomerDetails";
+import AddProduct from "./components/AddProduct";
 
 const App = () => {
   const [showUserBoard, setShowUserBoard] = useState(false);
@@ -73,6 +75,11 @@ const App = () => {
             <li className="nav-item">
               <Link to={"/addcustomer"} className="nav-link">
                 AddCustomers
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/addproduct"} className="nav-link">
+                AddProduct
               </Link>
             </li>
             <li className="nav-item">
@@ -147,7 +154,9 @@ const App = () => {
             <Route path="/mod" element={<BoardModerator />} />
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/customer-details/:customerId" element={<CustomerDetails />} />
             <Route path="/addcustomer" element={<AddCustomer />} />
+            <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/municipalities" element={<Municipalities />} />
           </Routes>
         </div>

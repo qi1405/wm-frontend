@@ -27,6 +27,13 @@ const Customers = () => {
       }
     );
   }, []);
+
+  // Function to handle click on a customer row
+  const handleCustomerClick = (customerId) => {
+    // Navigate to the customer details page using the customer ID
+    // You can replace '/customer/' with your actual route path
+    window.location.href = `/customer-details/${customerId}`;
+  };
   console.log(customers);
 
   return (
@@ -55,7 +62,7 @@ const Customers = () => {
         </thead>
         <tbody>
           {customers.map((customer) => (
-            <tr key={customer.customerID}>
+            <tr key={customer.customerID} onClick={() => handleCustomerClick(customer.customerID)}>
               <td>{customer.customerID}</td>
               <td>{customer.firstName}</td>
               <td>{customer.lastName}</td>
