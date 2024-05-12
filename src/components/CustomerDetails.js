@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import UserService from '../services/user.service';
 
 function CustomerDetails() {
-    const { customerId } = useParams();
+    const { customerID } = useParams();
     const [customer, setCustomer] = useState(null);
 
     useEffect(() => {
-        UserService.getCustomerWithProducts(customerId).then(
+        UserService.getCustomerWithProducts(customerID).then(
             (response) => {
                 setCustomer(response.data);
             },
@@ -16,7 +16,7 @@ function CustomerDetails() {
                 console.error("Error fetching customer details:", error);
             }
         );
-    }, [customerId]);
+    }, [customerID]);
 
     return (
         <div className="App">

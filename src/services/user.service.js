@@ -38,8 +38,12 @@ const getProducts = () => {
   return axios.get(API_PRODUCTS + "list", { headers: authHeader() });
 };
 
-const getCustomerWithProducts = customerId => {
-  return axios.get(API_MAIN + `${customerId}`, { headers: authHeader() });
+const getCustomerWithProducts = customerID => {
+  return axios.get(API_MAIN + `${customerID}`, { headers: authHeader() });
+};
+
+const getProductByID = productID => {
+  return axios.get(API_PRODUCTS + `${productID}`, { headers: authHeader() });
 };
 
 const createProduct = data => {
@@ -56,7 +60,8 @@ const userService = {
   getMunicipalities,
   getProducts,
   getCustomerWithProducts,
-  createProduct
+  createProduct,
+  getProductByID
 };
 
 export default userService

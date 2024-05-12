@@ -17,9 +17,11 @@ import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
 import Customers from "./components/Customers";
+import Products from "./components/Products";
 import AddCustomer from "./components/AddCustomer";
 import Municipalities from "./components/Municipalities";
 import CustomerDetails from "./components/CustomerDetails";
+import ProductDetails from "./components/ProductDetails";
 import AddProduct from "./components/AddProduct";
 
 const App = () => {
@@ -70,6 +72,11 @@ const App = () => {
             <li className="nav-item">
               <Link to={"/customers"} className="nav-link">
                 Customers
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/products"} className="nav-link">
+                Products
               </Link>
             </li>
             <li className="nav-item">
@@ -154,7 +161,9 @@ const App = () => {
             <Route path="/mod" element={<BoardModerator />} />
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/customers" element={<Customers />} />
-            <Route path="/customer-details/:customerId" element={<CustomerDetails />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/customer-details/:customerID" element={<CustomerDetails />} />
+            <Route path="/product-details/:productID" element={<ProductDetails />} />
             <Route path="/addcustomer" element={<AddCustomer />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/municipalities" element={<Municipalities />} />
