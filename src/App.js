@@ -23,6 +23,7 @@ import Municipalities from "./components/Municipalities";
 import CustomerDetails from "./components/CustomerDetails";
 import ProductDetails from "./components/ProductDetails";
 import AddProduct from "./components/AddProduct";
+import Invoices from "./components/Invoices";
 
 const App = () => {
   const [showUserBoard, setShowUserBoard] = useState(false);
@@ -77,6 +78,11 @@ const App = () => {
             <li className="nav-item">
               <Link to={"/products"} className="nav-link">
                 Products
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/invoices"} className="nav-link">
+                Invoices
               </Link>
             </li>
             <li className="nav-item">
@@ -162,6 +168,7 @@ const App = () => {
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/invoices" element={<Invoices />} />
             <Route path="/customer-details/:customerID" element={<CustomerDetails />} />
             <Route path="/product-details/:productID" element={<ProductDetails />} />
             <Route path="/addcustomer" element={<AddCustomer />} />

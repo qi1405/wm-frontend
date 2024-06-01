@@ -5,6 +5,7 @@ const API_URL = "http://localhost:8080/api/test/";
 const API_MAIN = "http://localhost:8080/api/customers/";
 const API_MUNICIPALITIES = "http://localhost:8080/api/municipalities/";
 const API_PRODUCTS = "http://localhost:8080/api/products/";
+const API_INVOICES = "http://localhost:8080/api/invoices/";
 
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
@@ -50,6 +51,14 @@ const createProduct = data => {
   return axios.post(API_PRODUCTS + "create", data, { headers: authHeader() });
 }
 
+const getInvoices = () => {
+  return axios.get(API_INVOICES + "list", { headers: authHeader() });
+};
+
+const editCustomer = (customerID, data) => {
+  return axios.put(API_MAIN + `update/${customerID}`, data, { headers: authHeader() });
+};
+
 const userService = {
   getPublicContent,
   getUserBoard,
@@ -61,7 +70,9 @@ const userService = {
   getProducts,
   getCustomerWithProducts,
   createProduct,
-  getProductByID
+  getProductByID,
+  getInvoices,
+  editCustomer
 };
 
 export default userService
