@@ -52,10 +52,11 @@ function CustomerDetails() {
       },
       productIds: updatedCustomer.products.map((product) => product.productID),
     };
-
+  
     UserService.editCustomer(customerID, payload)
       .then((response) => {
         setCustomer(response.data);
+        toggleEditModal(); // Close the modal on success
         customerPage(); // Reload the page to get the most recent data
       })
       .catch((error) => {
@@ -66,8 +67,6 @@ function CustomerDetails() {
           setErrorMessage("An error occurred while creating the customer.");
         }
       });
-
-    toggleEditModal();
   };
 
   return (
@@ -116,6 +115,9 @@ function CustomerDetails() {
                     <p>
                       <strong>Price:</strong> {product.price}
                     </p>
+                    <p>
+                      <strong>Municipality:</strong> {product.municipality.municipalityName}
+                    </p>
                   </li>
                 ))}
               </ul>
@@ -133,6 +135,7 @@ function CustomerDetails() {
       )}
     </div>
   );
+  
 }
 
 export default CustomerDetails;
