@@ -99,7 +99,7 @@ function CustomerDetails() {
               <p>
                 <strong>Municipality:</strong> {customer.municipality.municipalityName}
               </p>
-              <button onClick={toggleEditModal}>Edit</button>
+              
             </div>
             <div className="products-list">
               <h2>Associated Products</h2>
@@ -121,6 +121,7 @@ function CustomerDetails() {
                   </li>
                 ))}
               </ul>
+              <button onClick={toggleEditModal}>Edit</button>
             </div>
           </>
         )}
