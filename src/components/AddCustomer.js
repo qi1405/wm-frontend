@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import "./AddCustomer.css";
 import {useNavigate} from "react-router-dom";
 import UserService from '../services/user.service';
-import EventBus from "../common/EventBus";
+// import EventBus from "../common/EventBus";
 
 
 function AddProduct() {

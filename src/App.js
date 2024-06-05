@@ -24,6 +24,7 @@ import CustomerDetails from "./components/CustomerDetails";
 import ProductDetails from "./components/ProductDetails";
 import AddProduct from "./components/AddProduct";
 import Invoices from "./components/Invoices";
+import AddInvoice from "./components/AddInvoice";
 
 const App = () => {
   const [showUserBoard, setShowUserBoard] = useState(false);
@@ -61,9 +62,9 @@ const App = () => {
     <Router>
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
+          {/* <Link to={"/"} className="navbar-brand">
             bezKoder
-          </Link>
+          </Link> */}
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
@@ -93,6 +94,11 @@ const App = () => {
             <li className="nav-item">
               <Link to={"/addproduct"} className="nav-link">
                 AddProduct
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/addinvoice"} className="nav-link">
+                AddInvoice
               </Link>
             </li>
             <li className="nav-item">
@@ -173,6 +179,7 @@ const App = () => {
             <Route path="/product-details/:productID" element={<ProductDetails />} />
             <Route path="/addcustomer" element={<AddCustomer />} />
             <Route path="/addproduct" element={<AddProduct />} />
+            <Route path="/addinvoice" element={<AddInvoice />} />
             <Route path="/municipalities" element={<Municipalities />} />
           </Routes>
         </div>
