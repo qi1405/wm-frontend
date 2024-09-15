@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UserService from '../services/user.service';
+import Select from 'react-select';
+import 'react-select-search/style.css';
 
 const AddInvoice = () => {
   const [invoiceData, setInvoiceData] = useState({
@@ -37,9 +39,9 @@ const AddInvoice = () => {
     );
   }, []);
 
-  const handleCustomerChange = (e) => {
-    const customerId = e.target.value;
-    const selectedCustomer = customers.find(customer => customer.id === parseInt(customerId));
+  const handleCustomerChange = (selectedOption) => {
+    const customerId = selectedOption.value;
+    const selectedCustomer = customers.find(customer => customer.customerId === parseInt(customerId));
 
     setInvoiceData({
       ...invoiceData,
@@ -94,16 +96,20 @@ const AddInvoice = () => {
       });
   };
 
+  const customerOptions = customers.map(customer => ({
+    value: customer.id,
+    label: customer.name
+  }));
+
   return (
     <form onSubmit={handleSubmit}>
       <label>
         Customer:
-        <select name="customerId" value={invoiceData.customerId} onChange={handleCustomerChange}>
-          <option value="">Select Customer</option>
-          {customers.map(customer => (
-            <option key={customer.customerID} value={customer.customerID}>{customer.customerID} - {customer.firstName} {customer.lastName}</option>
-          ))}
-        </select>
+        <Select
+          name="customerId"
+          options={customerOptions}
+          onChange={handleCustomerChange}
+        />
       </label>
       <label>
         Municipality:

@@ -1,33 +1,79 @@
-label {
-  display: block;
-  margin-top: 10px;
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.login-form,
-.signup-form {
-  max-width: 350px;
-  margin: auto;
+.customers-table th,
+.customers-table td {
+  text-align: center; /* Centering column names and data */
+  padding: 10px;
+  border: 1px solid #ddd;
 }
 
-.card {
-  background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+.customers-table input {
+  margin-top: 5px;
+  text-align: center; /* Centering the input fields */
+  width: 90%; /* To make input fields take full column width */
+  padding: 5px;
+  box-sizing: border-box;
 }
 
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+.customers-table tbody tr:hover {
+  background-color: #f1f1f1; /* Optional: Add hover effect on table rows */
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.products-table th,
+.products-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center; /* Centering the text */
+}
+
+.products-table th {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.products-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.products-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.products-table td {
+  /* text-align: left; */
+}
+
+.invoices-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.invoices-table th,
+.invoices-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center; /* Centering the text */
+}
+
+.invoices-table th {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.invoices-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.invoices-table tr:hover {
+  background-color: #f1f1f1;
 }

@@ -62,9 +62,6 @@ const App = () => {
     <Router>
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          {/* <Link to={"/"} className="navbar-brand">
-            bezKoder
-          </Link> */}
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
@@ -162,7 +159,8 @@ const App = () => {
           )}
         </nav>
 
-        <div className="container mt-3">
+        {/* Apply the page-container class to center the content */}
+        <div className="page-container mt-3">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />

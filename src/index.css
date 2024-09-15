@@ -1,13 +1,25 @@
+/* index.css */
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.page-container {
+  max-width: 96%; /* Consistent page width of 96% */
+  margin: 0 auto; /* Center the content horizontally */
+  padding: 6px 0; /* Optional: Add padding at the top and bottom */
+}
+
+.page-container h1 {
+  text-align: center; /* Center the heading */
+  margin-bottom: 20px; /* Add some space below the heading */
+  font-size: 2rem; /* Adjust the font size if needed */
+  color: #333; /* Optional: Set color for better visibility */
 }
