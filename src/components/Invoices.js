@@ -39,20 +39,20 @@ const Invoices = () => {
     );
   }, []);
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
-
   const handleSort = (key) => {
     let direction = 'ascending';
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
     setSortConfig({ key, direction });
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
   };
 
   const sortedInvoices = [...invoices].sort((a, b) => {
@@ -83,7 +83,7 @@ const Invoices = () => {
       <table className="invoices-table">
         <thead>
           <tr>
-            <th className="table-cell" onClick={() => handleSort('invoiceID')}>
+            <th onClick={() => handleSort('invoiceID')}>
               Invoice ID
               <input
                 type="text"
@@ -93,7 +93,7 @@ const Invoices = () => {
                 placeholder="Search Invoice ID"
               />
             </th>
-            <th className="table-cell" onClick={() => handleSort('invoiceDate')}>
+            <th onClick={() => handleSort('invoiceDate')}>
               Invoice Date
               <input
                 type="text"
@@ -103,7 +103,7 @@ const Invoices = () => {
                 placeholder="Search Invoice Date"
               />
             </th>
-            <th className="table-cell" onClick={() => handleSort('totalAmount')}>
+            <th onClick={() => handleSort('totalAmount')}>
               Total Amount
               <input
                 type="text"
@@ -113,7 +113,7 @@ const Invoices = () => {
                 placeholder="Search Total Amount"
               />
             </th>
-            <th className="table-cell" onClick={() => handleSort('month')}>
+            <th onClick={() => handleSort('month')}>
               Month
               <input
                 type="text"
@@ -123,7 +123,7 @@ const Invoices = () => {
                 placeholder="Search Month"
               />
             </th>
-            <th className="table-cell" onClick={() => handleSort('isPaid')}>
+            <th onClick={() => handleSort('isPaid')}>
               Is Paid
               <input
                 type="text"
@@ -133,7 +133,7 @@ const Invoices = () => {
                 placeholder="Search Is Paid"
               />
             </th>
-            <th className="table-cell" onClick={() => handleSort('customerFirstName')}>
+            <th onClick={() => handleSort('customerFirstName')}>
               Customer First Name
               <input
                 type="text"
@@ -143,7 +143,7 @@ const Invoices = () => {
                 placeholder="Search Customer First Name"
               />
             </th>
-            <th className="table-cell" onClick={() => handleSort('customerLastName')}>
+            <th onClick={() => handleSort('customerLastName')}>
               Customer Last Name
               <input
                 type="text"
@@ -153,7 +153,7 @@ const Invoices = () => {
                 placeholder="Search Customer Last Name"
               />
             </th>
-            <th className="table-cell" onClick={() => handleSort('municipalityName')}>
+            <th onClick={() => handleSort('municipalityName')}>
               Municipality Name
               <input
                 type="text"
@@ -168,14 +168,14 @@ const Invoices = () => {
         <tbody>
           {filteredInvoices.map((invoice) => (
             <tr key={invoice.invoiceID}>
-              <td className="table-cell">{invoice.invoiceID}</td>
-              <td className="table-cell">{invoice.invoiceDate}</td>
-              <td className="table-cell">{invoice.totalAmount}</td>
-              <td className="table-cell">{invoice.month}</td>
-              <td className="table-cell">{invoice.isPaid ? 'Yes' : 'No'}</td>
-              <td className="table-cell">{invoice.customerFirstName}</td>
-              <td className="table-cell">{invoice.customerLastName}</td>
-              <td className="table-cell">{invoice.municipalityName}</td>
+              <td>{invoice.invoiceID}</td>
+              <td>{invoice.invoiceDate}</td>
+              <td>{invoice.totalAmount}</td>
+              <td>{invoice.month}</td>
+              <td>{invoice.isPaid ? 'Yes' : 'No'}</td>
+              <td>{invoice.customerFirstName}</td>
+              <td>{invoice.customerLastName}</td>
+              <td>{invoice.municipalityName}</td>
             </tr>
           ))}
         </tbody>
