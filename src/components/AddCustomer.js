@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./AddCustomer.css";
 import { useNavigate } from "react-router-dom";
 import UserService from "../services/user.service";
-// import EventBus from "../common/EventBus";
 
-function AddProduct() {
+function AddCustomer() {
   const [divType, setDivType] = useState(null);
   const navigate = useNavigate();
   const [municipalities, setMunicipalities] = useState([]);
@@ -20,7 +19,8 @@ function AddProduct() {
     productIds: null,
   });
   const [errorMessage, setErrorMessage] = useState("");
-  // const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     UserService.getMunicipalities().then(
@@ -44,17 +44,27 @@ function AddProduct() {
     );
   }, []);
 
+  useEffect(() => {
+    let timer;
+    if (isModalOpen && countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    } else if (countdown === 0) {
+      navigateToCustomersPage();
+    }
+    return () => clearTimeout(timer);
+  }, [isModalOpen, countdown]);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCustomer({ ...customer, [name]: value });
   };
 
-  const customerPage = () => {
-    navigate("/customers", { replace: true }); // Replace the current entry in the history stack
-    window.location.reload(); // Reload the page to get the most recent data
+  const navigateToCustomersPage = () => {
+    navigate("/customers", { replace: true });
+    window.location.reload();
   };
 
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
       customer: {
@@ -76,33 +86,24 @@ function AddProduct() {
 
     UserService.createCustomer(data).then(
       (response) => {
-        // Customer created successfully
         console.log("Customer created successfully", response.data);
-        // Navigate to customers page and reload
-        customerPage();
+        setIsModalOpen(true);  // Open the modal after saving
       },
       (error) => {
-        // Handle error
         console.error("Error creating customer", error);
         if (error.response && error.response.data) {
-          // If server returns error message, set it as errorMessage state
           setErrorMessage(error.response.data);
         } else {
-          // If no specific error message received from server, set a generic error message
           setErrorMessage("An error occurred while creating the customer.");
         }
       }
     );
-  }
+  };
 
   const GetDivType = () => {
     switch (divType) {
       case "INDIVIDUAL":
-        return (
-          <>
-            <p>You have choosen Customer type:</p>
-          </>
-        );
+        return <p>You have chosen Customer type:</p>;
       case "COMPANY":
         return <label htmlFor="companyName">Company Name</label>;
       default:
@@ -113,40 +114,28 @@ function AddProduct() {
   const GetDivTypeRight = () => {
     switch (divType) {
       case "INDIVIDUAL":
-        return (
-          <>
-            <p>INDIVIDUAL</p>
-          </>
-        );
+        return <p>INDIVIDUAL</p>;
       case "COMPANY":
         return (
-          <>
-            <div className="">
-              <input
-                type="text"
-                id="companyName"
-                required
-                value={customer.companyName || ""}
-                onChange={handleInputChange}
-                name="companyName"
-              />
-            </div>
-          </>
+          <div>
+            <input
+              type="text"
+              id="companyName"
+              required
+              value={customer.companyName || ""}
+              onChange={handleInputChange}
+              name="companyName"
+            />
+          </div>
         );
       default:
         return null;
     }
   };
 
-  console.log(customer);
-
   return (
     <div className="page-container">
-      <form
-        onSubmit={handleSubmit}
-        onChange={handleInputChange}
-        //   id="product_form"
-      >
+      <form onSubmit={handleSubmit} onChange={handleInputChange}>
         <div className="first-row">
           <div className="add-customer-details">
             <label htmlFor="firstName">Name</label>
@@ -160,136 +149,119 @@ function AddProduct() {
             <label htmlFor="productIds">Product</label>
           </div>
           <div className="add-customer-data">
-            <div className="">
-              <input
-                type="text"
-                id="firstName"
-                required
-                value={customer.name}
-                onChange={handleInputChange}
-                name="firstName"
-              />
-            </div>
-            <div className="">
-              <input
-                type="text"
-                id="surname"
-                required
-                value={customer.surname || ""}
-                onChange={handleInputChange}
-                name="surname"
-              />
-            </div>
-            <div className="">
-              <input
-                type="text"
-                id="email"
-                // pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
-                value={customer.email || ""}
-                onChange={handleInputChange}
-                name="email"
-              />
-            </div>
-            <div className="">
-              <input
-                type="text"
-                id="phonenumber"
-                required
-                value={customer.phonenumber || ""}
-                onChange={handleInputChange}
-                name="phonenumber"
-              />
-            </div>
-            <div className="">
-              <input
-                type="text"
-                id="address"
-                value={customer.address || ""}
-                onChange={handleInputChange}
-                name="address"
-              />
-            </div>
-            <div>
-              <select
-                name="municipalityID"
-                value={customer.municipalityID}
-                onChange={handleInputChange}
-              >
-                <option value="" defaultValue="selected" hidden>
-                  Choose municipality
+            <input
+              type="text"
+              id="firstName"
+              required
+              value={customer.name}
+              onChange={handleInputChange}
+              name="firstName"
+            />
+            <input
+              type="text"
+              id="surname"
+              required
+              value={customer.surname || ""}
+              onChange={handleInputChange}
+              name="surname"
+            />
+            <input
+              type="text"
+              id="email"
+              value={customer.email || ""}
+              onChange={handleInputChange}
+              name="email"
+            />
+            <input
+              type="text"
+              id="phonenumber"
+              required
+              value={customer.phonenumber || ""}
+              onChange={handleInputChange}
+              name="phonenumber"
+            />
+            <input
+              type="text"
+              id="address"
+              value={customer.address || ""}
+              onChange={handleInputChange}
+              name="address"
+            />
+            <select
+              name="municipalityID"
+              value={customer.municipalityID}
+              onChange={handleInputChange}
+            >
+              <option value="" defaultValue="selected" hidden>
+                Choose municipality
+              </option>
+              {municipalities.map((municipality) => (
+                <option
+                  key={municipality.municipalityID}
+                  value={municipality.municipalityID}
+                >
+                  {municipality.municipalityID} - {municipality.municipalityName}
                 </option>
-                {municipalities.map((municipality) => (
-                  <option
-                    key={municipality.municipalityID}
-                    value={municipality.municipalityID}
-                  >
-                    {municipality.municipalityID} -{" "}
-                    {municipality.municipalityName}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <select
-                name="customerType"
-                id="customerType"
-                onClick={(event) => {
-                  setDivType(event.target.value);
-                }}
-                onChange={handleInputChange}
-              >
-                <option value="" defaultValue="selected" hidden="hidden">
-                  Choose type
+              ))}
+            </select>
+            <select
+              name="customerType"
+              id="customerType"
+              onClick={(event) => setDivType(event.target.value)}
+              onChange={handleInputChange}
+            >
+              <option value="" defaultValue="selected" hidden>
+                Choose type
+              </option>
+              <option value="INDIVIDUAL">INDIVIDUAL</option>
+              <option value="COMPANY">COMPANY</option>
+            </select>
+            <>{GetDivTypeRight()}</>
+            <select
+              name="productIds"
+              value={customer.productIds}
+              onChange={handleInputChange}
+            >
+              <option value="" defaultValue="selected" hidden>
+                Assign product
+              </option>
+              {products.map((product) => (
+                <option key={product.productID} value={product.productID}>
+                  {product.productID} - {product.productName} - {product.price} -{" "}
+                  {product.municipality.municipalityID} -{" "}
+                  {product.municipality.municipalityName}
                 </option>
-                <option value="INDIVIDUAL" onChange={handleInputChange}>
-                  INDIVIDUAL
-                </option>
-                <option value="COMPANY" onChange={handleInputChange}>
-                  COMPANY
-                </option>
-              </select>
-            </div>
-            <div id="productType">{GetDivTypeRight()}</div>
-            <div>
-              <select
-                name="productIds"
-                value={customer.productIds}
-                onChange={handleInputChange}
-              >
-                <option value="" defaultValue="selected" hidden>
-                  Assign product
-                </option>
-                {products.map((product) => (
-                  <option key={product.productID} value={product.productID}>
-                    {product.productID} - {product.productName} -{" "}
-                    {product.price} - {product.municipality.municipalityID} -{" "}
-                    {product.municipality.municipalityName}
-                  </option>
-                ))}
-              </select>
-            </div>
+              ))}
+            </select>
           </div>
         </div>
         <div className="second-row">
           <div className="save-button-container">
-            <button
-              type="submit"
-            >
-              Save
-            </button>
+            <button type="submit">Save</button>
             {errorMessage && <p>{errorMessage}</p>}
           </div>
           <div className="cancel-button-container">
-            <button
-              type="button"
-              onClick={customerPage}
-            >
+            <button type="button" onClick={navigateToCustomersPage}>
               Cancel
             </button>
           </div>
         </div>
       </form>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>
+              In {countdown} seconds, you will be redirected to the customers
+              page, or click the button below to go there directly.
+            </p>
+            <button onClick={navigateToCustomersPage}>Go to Customers Page</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-export default AddProduct;
+
+export default AddCustomer;
