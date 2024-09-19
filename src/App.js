@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import "./index.css"; // Assuming index.css will hold sidebar styles
 
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -14,7 +14,6 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 
 import { logout } from "./slices/auth";
-
 import EventBus from "./common/EventBus";
 import Customers from "./components/Customers";
 import Products from "./components/Products";
@@ -27,6 +26,7 @@ import Invoices from "./components/Invoices";
 import AddInvoice from "./components/AddInvoice";
 
 const App = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
   const [showUserBoard, setShowUserBoard] = useState(false);
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
@@ -58,109 +58,62 @@ const App = () => {
     };
   }, [currentUser, logOut]);
 
+  // Toggle sidebar function
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <Router>
-      <div>
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/customers"} className="nav-link">
-                Customers
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/products"} className="nav-link">
-                Products
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/invoices"} className="nav-link">
-                Invoices
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/addcustomer"} className="nav-link">
-                AddCustomers
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/addproduct"} className="nav-link">
-                AddProduct
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/addinvoice"} className="nav-link">
-                AddInvoice
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/municipalities"} className="nav-link">
-                Municipalities
-              </Link>
-            </li>
+      <div className={`app-container ${isSidebarOpen ? "sidebar-open" : ""}`}>
+        <button className="sidebar-toggle" onClick={toggleSidebar}>
+          {isSidebarOpen ? "Close" : "Open"} Sidebar
+        </button>
 
-            {showModeratorBoard && (
-              <li className="nav-item">
-                <Link to={"/mod"} className="nav-link">
-                  Moderator Board
-                </Link>
-              </li>
-            )}
+        <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+          <ul>
+            <li>
+              <span>Customers</span>
+              <ul>
+                <li><Link to="/customers">Customers</Link></li>
+                <li><Link to="/addcustomer">Add Customer</Link></li>
+              </ul>
+            </li>
+            <li>
+              <span>Products</span>
+              <ul>
+                <li><Link to="/products">Products</Link></li>
+                <li><Link to="/addproduct">Add Product</Link></li>
+              </ul>
+            </li>
+            <li>
+              <span>Invoices</span>
+              <ul>
+                <li><Link to="/invoices">Invoices</Link></li>
+                <li><Link to="/addinvoice">Add Invoice</Link></li>
+              </ul>
+            </li>
+            <li>
+              <Link to="/municipalities">Municipalities</Link>
+            </li>
+            <li>
+              <span>User Management</span>
+              <ul>
+                {showAdminBoard && (
+                  <li><Link to="/admin">Admin Board</Link></li>
+                )}
+                {showModeratorBoard && (
+                  <li><Link to="/mod">Moderator Board</Link></li>
+                )}
+                {currentUser && (
+                  <li><Link to="/user">User Board</Link></li>
+                )}
+              </ul>
+            </li>
+          </ul>
+        </div>
 
-            {showAdminBoard && (
-              <li className="nav-item">
-                <Link to={"/admin"} className="nav-link">
-                  Admin Board
-                </Link>
-              </li>
-            )}
-
-            {currentUser && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
-                </Link>
-              </li>
-            )}
-          </div>
-
-          {currentUser ? (
-            <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/profile"} className="nav-link">
-                  {currentUser.username}
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a href="/login" className="nav-link" onClick={logOut}>
-                  LogOut
-                </a>
-              </li>
-            </div>
-          ) : (
-            <div className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
-                  Login
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link to={"/register"} className="nav-link">
-                  Sign Up
-                </Link>
-              </li>
-            </div>
-          )}
-        </nav>
-
-        {/* Apply the page-container class to center the content */}
-        <div className="page-container mt-3">
+        <div className="page-container">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />

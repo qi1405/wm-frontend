@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EventBus from "../common/EventBus";
 import UserService from "../services/user.service";
-import '../App.css'; // Importing the CSS file for styling
+import './Products.css'; // Importing the CSS file for styling
 
 const Products = () => {
   const [products, setProducts] = useState([]);

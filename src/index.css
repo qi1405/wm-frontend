@@ -1,5 +1,4 @@
-/* index.css */
-
+/* Existing styles */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -22,4 +21,70 @@ code {
   margin-bottom: 20px; /* Add some space below the heading */
   font-size: 2rem; /* Adjust the font size if needed */
   color: #333; /* Optional: Set color for better visibility */
+}
+
+/* Sidebar Styles */
+.app-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #343a40;
+  position: fixed;
+  top: 0;
+  left: -250px; /* Hidden by default */
+  height: 100%;
+  padding-top: 20px;
+  transition: left 0.3s ease;
+  color: white;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  left: 0; /* Slide out when open */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+}
+
+.sidebar ul li ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: left 0.3s ease;
+}
+
+.page-container {
+  transition: margin-left 0.3s ease;
+  margin-left: 0; /* Default: no margin when sidebar is closed */
+}
+
+.app-container.sidebar-open .page-container {
+  margin-left: 260px; /* Add margin when the sidebar is open */
+}
+
+.page-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
 }

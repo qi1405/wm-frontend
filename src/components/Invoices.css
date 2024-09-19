@@ -1,0 +1,34 @@
+.invoices-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  
+  .invoices-table th,
+  .invoices-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center; /* Centering the text */
+  }
+  
+  .invoices-table th {
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+  
+  .invoices-table input {
+    margin-top: 5px;
+    text-align: center; /* Centering the input fields */
+    width: 90%; /* To make input fields take full column width */
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  .invoices-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .invoices-table tr:hover {
+    background-color: #f1f1f1;
+  }
