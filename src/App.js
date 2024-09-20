@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import "./index.css"; // Assuming index.css will hold sidebar styles
+import "./index.css"; // Ensure your sidebar styles are applied
 
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -12,9 +13,6 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-
-import { logout } from "./slices/auth";
-import EventBus from "./common/EventBus";
 import Customers from "./components/Customers";
 import Products from "./components/Products";
 import AddCustomer from "./components/AddCustomer";
@@ -24,9 +22,11 @@ import ProductDetails from "./components/ProductDetails";
 import AddProduct from "./components/AddProduct";
 import Invoices from "./components/Invoices";
 import AddInvoice from "./components/AddInvoice";
+import { logout } from "./slices/auth";
+import EventBus from "./common/EventBus";
 
 const App = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
+  const [isOpen, setIsOpen] = useState(false);
   const [showUserBoard, setShowUserBoard] = useState(false);
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
@@ -58,62 +58,69 @@ const App = () => {
     };
   }, [currentUser, logOut]);
 
-  // Toggle sidebar function
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsOpen(!isOpen);
   };
 
   return (
     <Router>
-      <div className={`app-container ${isSidebarOpen ? "sidebar-open" : ""}`}>
+      <div className="app-container">
         <button className="sidebar-toggle" onClick={toggleSidebar}>
-          {isSidebarOpen ? "Close" : "Open"} Sidebar
+          {isOpen ? "Close Sidebar" : "Open Sidebar"}
         </button>
 
-        <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <div className={`sidebar ${isOpen ? "open" : ""}`}>
           <ul>
             <li>
-              <span>Customers</span>
+              <Link to={"/home"}>Home</Link>
+            </li>
+            <li>
+              <Link to={"/customers"}>Customers</Link>
               <ul>
-                <li><Link to="/customers">Customers</Link></li>
-                <li><Link to="/addcustomer">Add Customer</Link></li>
+                <li><Link to={"/customers"}>Customers Page</Link></li>
+                <li><Link to={"/addcustomer"}>Add Customer</Link></li>
               </ul>
             </li>
             <li>
-              <span>Products</span>
+              <Link to={"/products"}>Products</Link>
               <ul>
-                <li><Link to="/products">Products</Link></li>
-                <li><Link to="/addproduct">Add Product</Link></li>
+                <li><Link to={"/products"}>Products Page</Link></li>
+                <li><Link to={"/addproduct"}>Add Product</Link></li>
               </ul>
             </li>
             <li>
-              <span>Invoices</span>
+              <Link to={"/invoices"}>Invoices</Link>
               <ul>
-                <li><Link to="/invoices">Invoices</Link></li>
-                <li><Link to="/addinvoice">Add Invoice</Link></li>
+                <li><Link to={"/invoices"}>Invoices Page</Link></li>
+                <li><Link to={"/addinvoice"}>Add Invoice</Link></li>
               </ul>
             </li>
             <li>
-              <Link to="/municipalities">Municipalities</Link>
+              <Link to={"/municipalities"}>Municipalities</Link>
             </li>
-            <li>
-              <span>User Management</span>
-              <ul>
-                {showAdminBoard && (
-                  <li><Link to="/admin">Admin Board</Link></li>
-                )}
-                {showModeratorBoard && (
-                  <li><Link to="/mod">Moderator Board</Link></li>
-                )}
-                {currentUser && (
-                  <li><Link to="/user">User Board</Link></li>
-                )}
-              </ul>
-            </li>
+
+            {showModeratorBoard && (
+              <li>
+                <Link to={"/mod"}>Moderator Board</Link>
+              </li>
+            )}
+
+            {showAdminBoard && (
+              <li>
+                <Link to={"/admin"}>Admin Board</Link>
+              </li>
+            )}
+
+            {currentUser && (
+              <li>
+                <Link to={"/user"}>User Board</Link>
+              </li>
+            )}
           </ul>
         </div>
 
-        <div className="page-container">
+        {/* Main content */}
+        <div className={`page-container ${isOpen ? "" : "sidebar-closed"}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />

@@ -12,21 +12,20 @@ code {
 
 .page-container {
   max-width: 96%; /* Consistent page width of 96% */
-  margin: 0 auto; /* Center the content horizontally */
-  padding: 6px 0; /* Optional: Add padding at the top and bottom */
+  margin: 0 auto;
+  padding: 6px 0;
 }
 
 .page-container h1 {
-  text-align: center; /* Center the heading */
-  margin-bottom: 20px; /* Add some space below the heading */
-  font-size: 2rem; /* Adjust the font size if needed */
-  color: #333; /* Optional: Set color for better visibility */
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
 }
 
 /* Sidebar Styles */
 .app-container {
   display: flex;
-  flex-direction: row;
 }
 
 .sidebar {
@@ -34,7 +33,7 @@ code {
   background-color: #343a40;
   position: fixed;
   top: 0;
-  left: -250px; /* Hidden by default */
+  left: -250px;
   height: 100%;
   padding-top: 20px;
   transition: left 0.3s ease;
@@ -43,12 +42,12 @@ code {
 }
 
 .sidebar.open {
-  left: 0; /* Slide out when open */
+  left: 0;
 }
 
 .sidebar ul {
   list-style-type: none;
-  padding-left: 0;
+  padding: 0;
 }
 
 .sidebar ul li {
@@ -70,21 +69,17 @@ code {
   border: none;
   padding: 10px;
   cursor: pointer;
-  transition: left 0.3s ease;
 }
 
 .page-container {
   transition: margin-left 0.3s ease;
-  margin-left: 0; /* Default: no margin when sidebar is closed */
+  margin-left: 0;
 }
 
-.app-container.sidebar-open .page-container {
-  margin-left: 260px; /* Add margin when the sidebar is open */
+.page-container.sidebar-closed {
+  margin-left: 0; /* No margin when sidebar is closed */
 }
 
-.page-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 2rem;
-  color: #333;
+.sidebar.open + .page-container {
+  margin-left: 260px; /* Shift content when sidebar is open */
 }
