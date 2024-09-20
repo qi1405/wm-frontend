@@ -87,7 +87,7 @@ function AddCustomer() {
     UserService.createCustomer(data).then(
       (response) => {
         console.log("Customer created successfully", response.data);
-        setIsModalOpen(true);  // Open the modal after saving
+        setIsModalOpen(true); // Open the modal after saving
       },
       (error) => {
         console.error("Error creating customer", error);
@@ -200,7 +200,8 @@ function AddCustomer() {
                   key={municipality.municipalityID}
                   value={municipality.municipalityID}
                 >
-                  {municipality.municipalityID} - {municipality.municipalityName}
+                  {municipality.municipalityID} -{" "}
+                  {municipality.municipalityName}
                 </option>
               ))}
             </select>
@@ -227,8 +228,8 @@ function AddCustomer() {
               </option>
               {products.map((product) => (
                 <option key={product.productID} value={product.productID}>
-                  {product.productID} - {product.productName} - {product.price} -{" "}
-                  {product.municipality.municipalityID} -{" "}
+                  {product.productID} - {product.productName} - {product.price}{" "}
+                  - {product.municipality.municipalityID} -{" "}
                   {product.municipality.municipalityName}
                 </option>
               ))}
@@ -256,7 +257,9 @@ function AddCustomer() {
               In {countdown} seconds, you will be redirected to the customers
               page, or click the button below to go there directly.
             </p>
-            <button onClick={navigateToCustomersPage}>Go to Customers Page</button>
+            <button onClick={navigateToCustomersPage}>
+              Go to Customers Page
+            </button>
           </div>
         </div>
       )}
