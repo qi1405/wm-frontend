@@ -1,144 +1,181 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import UserService from '../services/user.service';
-import Select from 'react-select';
-import 'react-select-search/style.css';
+import React, { useEffect, useState } from "react";
+import "./AddInvoice.css";
+import { useNavigate } from "react-router-dom";
+import UserService from "../services/user.service";
 
-const AddInvoice = () => {
-  const [invoiceData, setInvoiceData] = useState({
-    customerId: '',
-    municipalityId: '',
-    months: '',
-    additionalProducts: [{ productId: '', quantity: '' }],
-    isPaid: false,
-  });
-
+function AddInvoice() {
+  const [municipalities, setMunicipalities] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const employeeId = localStorage.getItem('employeeId');
+  const [products, setProducts] = useState([]);
+  const [invoice, setInvoice] = useState({
+    month: "",
+    isPaid: false,
+    customerID: null,
+    productID: null,
+    municipalityID: null,
+  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [countdown, setCountdown] = useState(5);
+  const employeeID = localStorage.getItem('employeeID');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch data from your API (replace with your actual API endpoint)
+    UserService.getMunicipalities().then(
+      (response) => setMunicipalities(response.data),
+      (error) => console.error(error)
+    );
+
     UserService.getCustomers().then(
-      (response) => {
-        setCustomers(response.data);
-      },
-      (error) => {
-        const _customers =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+      (response) => setCustomers(response.data),
+      (error) => console.error(error)
+    );
 
-        setCustomers(_customers);
-
-        if (error.response && error.response.status === 401) {
-        //   EventBus.dispatch("logout");
-        }
-      }
+    UserService.getProducts().then(
+      (response) => setProducts(response.data),
+      (error) => console.error(error)
     );
   }, []);
 
-  const handleCustomerChange = (selectedOption) => {
-    const customerId = selectedOption.value;
-    const selectedCustomer = customers.find(customer => customer.customerId === parseInt(customerId));
+  useEffect(() => {
+    let timer;
+    if (isModalOpen && countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    } else if (countdown === 0) {
+      navigateToInvoicesPage();
+    }
+    return () => clearTimeout(timer);
+  }, [isModalOpen, countdown]);
 
-    setInvoiceData({
-      ...invoiceData,
-      customerId,
-      municipalityId: selectedCustomer?.municipality?.municipalityId || ''
-    });
+  const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setInvoice({ ...invoice, [name]: type === "checkbox" ? checked : value });
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInvoiceData({
-      ...invoiceData,
-      [name]: value,
-    });
+  const navigateToInvoicesPage = () => {
+    navigate("/invoices", { replace: true });
+    window.location.reload();
   };
 
-  const handleProductChange = (index, e) => {
-    const { name, value } = e.target;
-    const products = [...invoiceData.additionalProducts];
-    products[index][name] = value;
-    setInvoiceData({ ...invoiceData, additionalProducts: products });
-  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-  const addProduct = () => {
-    setInvoiceData({
-      ...invoiceData,
-      additionalProducts: [...invoiceData.additionalProducts, { productId: '', quantity: '' }],
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const payload = {
-      ...invoiceData,
-      employeeId: parseInt(employeeId),
-      customerId: parseInt(invoiceData.customerId),
-      municipalityId: parseInt(invoiceData.municipalityId),
-      additionalProducts: invoiceData.additionalProducts.map(product => ({
-        ...product,
-        productId: parseInt(product.productId),
-        quantity: parseInt(product.quantity)
-      })),
-      months: invoiceData.months.split(',').map(month => month.trim())
+    const data = {
+      invoice: {
+        month: invoice.month,
+        isPaid: invoice.isPaid,
+        employeeID: employeeID,
+        customer: { customerID: invoice.customerID },
+        product: { productID: invoice.productID },
+        municipality: { municipalityID: invoice.municipalityID },
+      },
     };
 
-    axios.post('/api/invoices', payload)
-      .then(response => {
-        console.log('Invoice added successfully', response.data);
-      })
-      .catch(error => {
-        console.error('There was an error adding the invoice!', error);
-      });
+    UserService.createInvoice(data).then(
+      (response) => {
+        console.log("Invoice created successfully", response.data);
+        setIsModalOpen(true);
+      },
+      (error) => {
+        console.log(data)
+        console.error("Error creating invoice", error);
+        setErrorMessage(error.response?.data?.message || "An error occurred while creating the invoice.");
+      }
+    );
   };
 
-  const customerOptions = customers.map(customer => ({
-    value: customer.id,
-    label: customer.name
-  }));
-
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Customer:
-        <Select
-          name="customerId"
-          options={customerOptions}
-          onChange={handleCustomerChange}
-        />
-      </label>
-      <label>
-        Municipality:
-        <input type="text" name="municipalityId" value={invoiceData.municipalityId} readOnly />
-      </label>
-      <label>
-        Months (comma-separated):
-        <input type="text" name="months" value={invoiceData.months} onChange={handleChange} />
-      </label>
-      <label>
-        Is Paid:
-        <input type="checkbox" name="isPaid" checked={invoiceData.isPaid} onChange={(e) => setInvoiceData({ ...invoiceData, isPaid: e.target.checked })} />
-      </label>
-      {invoiceData.additionalProducts.map((product, index) => (
-        <div key={index}>
-          <label>
-            Product ID:
-            <input type="number" name="productId" value={product.productId} onChange={(e) => handleProductChange(index, e)} />
-          </label>
-          <label>
-            Quantity:
-            <input type="number" name="quantity" value={product.quantity} onChange={(e) => handleProductChange(index, e)} />
-          </label>
+    <div className="page-container">
+      <form onSubmit={handleSubmit}>
+        <div className="first-row">
+          <div className="add-invoice-details">
+            <label htmlFor="month">Month</label>
+            <label htmlFor="isPaid">Is Paid</label>
+            <label htmlFor="customerID">Customer</label>
+            <label htmlFor="municipalityID">Municipality</label>
+            <label htmlFor="productID">Product</label>
+          </div>
+          <div className="add-invoice-data">
+            <input
+              type="text"
+              id="month"
+              required
+              name="month"
+              value={invoice.month}
+              onChange={handleInputChange}
+            />
+            <input
+              type="checkbox"
+              id="isPaid"
+              name="isPaid"
+              checked={invoice.isPaid}
+              onChange={handleInputChange}
+            />
+            <select
+              id="customerID"
+              required
+              name="customerID"
+              value={invoice.customerID}
+              onChange={handleInputChange}
+            >
+              <option value="" hidden>Choose customer</option>
+              {customers.map((customer) => (
+                <option key={customer.customerID} value={customer.customerID}>
+                  {customer.firstName} {customer.surname}
+                </option>
+              ))}
+            </select>
+            <select
+              id="municipalityID"
+              required
+              name="municipalityID"
+              value={invoice.municipalityID}
+              onChange={handleInputChange}
+            >
+              <option value="" hidden>Choose municipality</option>
+              {municipalities.map((municipality) => (
+                <option key={municipality.municipalityID} value={municipality.municipalityID}>
+                  {municipality.municipalityName}
+                </option>
+              ))}
+            </select>
+            <select
+              id="productID"
+              required
+              name="productID"
+              value={invoice.productID}
+              onChange={handleInputChange}
+            >
+              <option value="" hidden>Assign product</option>
+              {products.map((product) => (
+                <option key={product.productID} value={product.productID}>
+                  {product.productName} - {product.price}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      ))}
-      <button type="button" onClick={addProduct}>Add Product</button>
-      <button type="submit">Add Invoice</button>
-    </form>
+        <div className="second-row">
+          <div className="save-button-container">
+            <button type="submit">Save</button>
+            {errorMessage && <p>{errorMessage}</p>}
+          </div>
+          <div className="cancel-button-container">
+            <button type="button" onClick={navigateToInvoicesPage}>Cancel</button>
+          </div>
+        </div>
+      </form>
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>In {countdown} seconds, you will be redirected to the invoices page, or click below to go directly.</p>
+            <button onClick={navigateToInvoicesPage}>Go to Invoices Page</button>
+          </div>
+        </div>
+      )}
+    </div>
   );
-};
+}
 
 export default AddInvoice;

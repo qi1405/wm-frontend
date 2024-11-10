@@ -59,6 +59,11 @@ const editCustomer = (customerID, data) => {
   return axios.put(API_MAIN + `update/${customerID}`, data, { headers: authHeader() });
 };
 
+const createInvoice = (data) => {
+  return axios.post(API_INVOICES + "create-without-default", data, { headers: authHeader() });
+};
+
+
 const userService = {
   getPublicContent,
   getUserBoard,
@@ -72,7 +77,8 @@ const userService = {
   createProduct,
   getProductByID,
   getInvoices,
-  editCustomer
+  editCustomer,
+  createInvoice
 };
 
 export default userService

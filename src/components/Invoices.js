@@ -6,7 +6,7 @@ import './Invoices.css'; // Importing the CSS file for styling
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);
   const [filters, setFilters] = useState({
-    invoiceID: '',
+    invoiceId: '',
     invoiceDate: '',
     totalAmount: '',
     month: '',
@@ -77,6 +77,8 @@ const Invoices = () => {
     });
   });
 
+  console.log(invoices);
+
   return (
     <div className="page-container">
       <h1>Invoices</h1>
@@ -88,7 +90,7 @@ const Invoices = () => {
               <input
                 type="text"
                 name="invoiceID"
-                value={filters.invoiceID}
+                value={filters.invoiceId}
                 onChange={handleFilterChange}
                 placeholder="Search Invoice ID"
               />
@@ -167,8 +169,8 @@ const Invoices = () => {
         </thead>
         <tbody>
           {filteredInvoices.map((invoice) => (
-            <tr key={invoice.invoiceID}>
-              <td>{invoice.invoiceID}</td>
+            <tr key={invoice.invoiceId}>
+              <td>{invoice.invoiceId}</td>
               <td>{invoice.invoiceDate}</td>
               <td>{invoice.totalAmount}</td>
               <td>{invoice.month}</td>

@@ -1,0 +1,66 @@
+form {
+    width: 50%;
+    display: block;
+    border: 1px solid;
+}
+
+.first-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-invoice-details {
+    display: grid;
+    width: 50%;
+    border: 1px solid;
+    text-align: right;
+    align-items: center;
+    margin: auto;
+}
+
+.add-invoice-details label {
+    text-align: right;
+}
+
+.add-invoice-data {
+    display: grid;
+    width: 50%;
+    border: 1px solid;
+    text-align: left;
+}
+
+.add-invoice-data input,
+.add-invoice-data select {
+    width: 100%;
+}
+
+.second-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.save-button-container,
+.cancel-button-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
